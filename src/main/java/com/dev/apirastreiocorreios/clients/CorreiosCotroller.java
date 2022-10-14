@@ -32,7 +32,7 @@ public class CorreiosCotroller {
 				    + "<senha>XXXXXX</senha>\r\n" + 
 		              "<tipo>L</tipo>\r\n"
 				    + "<resultado>T</resultado>\r\n" +
-		              "<objetos>" + codigo + "</objetos>\r\n"
+		              "<objetos>" + codigo.toUpperCase() + "</objetos>\r\n"
 				   +  "<lingua>101</lingua>\r\n" +
 		              "<token>XXXXXX</token>\r\n" +
 				      "</rastroObjeto>";
