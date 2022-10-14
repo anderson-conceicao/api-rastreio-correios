@@ -5,27 +5,22 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.dev.apirastreiocorreios.model.ConsultaCorreios;
+import com.dev.apirastreiocorreios.model.Objeto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@RestController
-@RequestMapping("/busca-correios")
-
-
-public class CorreiosCotroller {
+@Service
+public class CorreiosClient {
 	
 	@Autowired
 	RestTemplate restTemplate;
-	@GetMapping("/{codigo}")
-	ResponseEntity<?> buscaCorreios(@PathVariable String codigo) throws JsonMappingException, JsonProcessingException {
+	
+	public ResponseEntity<Objeto> buscaCorreios(String codigo) throws JsonMappingException, JsonProcessingException {
 		String uri = "http://webservice.correios.com.br/service/rest/rastro/rastroMobile";
 		String body = "<rastroObjeto>\r\n" +
 		              "<usuario>XXXXXX</usuario>\r\n"

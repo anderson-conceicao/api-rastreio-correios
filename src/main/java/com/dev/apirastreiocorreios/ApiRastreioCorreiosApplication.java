@@ -11,12 +11,9 @@ public class ApiRastreioCorreiosApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ApiRastreioCorreiosApplication.class, args);
 	}
-	// Annotation  
-	@Bean
 
-	// Method 
-	public RestTemplate restTemplate() 
-	{
-	 return new RestTemplate();
+	@Bean
+	public RestTemplate restTemplate() {
+		return new RestTemplate();
 	}
 }
