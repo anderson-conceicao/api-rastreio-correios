@@ -1,5 +1,7 @@
 package com.dev.apirastreiocorreios.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,6 +38,14 @@ public class PacoteService {
 		pacote.setUsuario(usuario);		
 		return pacoteRepository.save(pacote);
 		
+	}
+	
+	public List<Pacote> listar(){
+		return pacoteRepository.findAll();
+	}
+	
+	public List<Pacote> bucarPacotesPorUsuario(Long id){
+		return pacoteRepository.findPacoteByUsuarioId(id);
 	}
 	
 	public Pacote pacoteToObjeto(Objeto objeto) {		
