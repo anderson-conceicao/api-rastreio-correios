@@ -15,6 +15,7 @@ import com.dev.apirastreiocorreios.repositories.PacoteRepository;
 import com.dev.apirastreiocorreios.repositories.UsuarioRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.google.gson.Gson;
 
 @Service
 public class PacoteService {
@@ -48,10 +49,17 @@ public class PacoteService {
 		return pacoteRepository.findPacoteByUsuarioId(id);
 	}
 	
+	
+//	public Objeto descricaoToObjeto(String descricao) throws JsonMappingException, JsonProcessingException {
+//		ObjectMapper objectMapper = new ObjectMapper();		
+//		return objectMapper.readValue(descricao, Objeto.class);
+//		
+//	}
+	
 	public Pacote pacoteToObjeto(Objeto objeto) {		
 		Pacote pacote= new Pacote();
-		pacote.setCodigo(objeto.getNumero());
-		pacote.setDescricao(objeto.toString());
+		pacote.setCodigo(objeto.getNumero());		
+		pacote.setDescricao(new Gson().toJson(objeto));
 		return pacote;
 		
 	}
