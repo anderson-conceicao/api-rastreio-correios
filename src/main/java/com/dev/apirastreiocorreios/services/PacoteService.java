@@ -1,12 +1,15 @@
 package com.dev.apirastreiocorreios.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.dev.apirastreiocorreios.clients.CorreiosClient;
+import com.dev.apirastreiocorreios.exceptions.ObjetoJaCadastradoParaOUsuarioException;
+import com.dev.apirastreiocorreios.exceptions.UsuarioNotFoundException;
 import com.dev.apirastreiocorreios.model.Objeto;
 import com.dev.apirastreiocorreios.model.Pacote;
 import com.dev.apirastreiocorreios.model.Usuario;
@@ -34,9 +37,20 @@ public class PacoteService {
 	}
 	@Transactional
 	public Pacote salvar(PacoteDTO pacoteDTO) throws JsonMappingException, JsonProcessingException {
-		Usuario usuario=usuarioRepository.findById(pacoteDTO.getUsuario()).get();
+		
+		Optional<Usuario> usuario=usuarioRepository.findById(pacoteDTO.getUsuario());
+		
+		if(usuario.isEmpty()) {
+			throw new UsuarioNotFoundException("Usuário não encontrado");
+		}
+		
 		Pacote pacote=pacoteToObjeto(buscarCorreios(pacoteDTO.getCodigo()));
-		pacote.setUsuario(usuario);		
+		
+		if(pacoteRepository.verifaPacoteExistente(pacote.getCodigo(), usuario.get().getId()).isPresent()) {
+			throw new ObjetoJaCadastradoParaOUsuarioException("Objeto já está cadastrado para esse usuário!!");
+		}
+		
+		pacote.setUsuario(usuario.get());		
 		return pacoteRepository.save(pacote);
 		
 	}
