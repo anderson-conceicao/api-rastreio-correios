@@ -29,6 +29,12 @@ public class UsuarioController {
 		return ResponseEntity.ok(usuarioService.listar());
 
 	}
+	
+	@GetMapping("/{id}")
+	ResponseEntity<Usuario> buscar(@PathVariable Long id) {
+		return ResponseEntity.ok(usuarioService.buscar(id));
+
+	}
 
 	@PostMapping
 	ResponseEntity<Usuario> salvar(@RequestBody Usuario usuario) {

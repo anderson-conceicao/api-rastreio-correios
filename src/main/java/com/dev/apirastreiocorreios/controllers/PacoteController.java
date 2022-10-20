@@ -43,8 +43,8 @@ public class PacoteController {
 	}
 
 	@PostMapping
-	ResponseEntity<Pacote> salvar(@RequestBody PacoteDTO obj) throws JsonMappingException, JsonProcessingException {
-		return ResponseEntity.ok(pacoteService.salvar(obj));
+	ResponseEntity<Pacote> salvar(@RequestBody PacoteDTO pacote) throws JsonMappingException, JsonProcessingException {
+		return ResponseEntity.ok(pacoteService.salvar(pacote));
 	}
 
 }

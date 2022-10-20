@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.dev.apirastreiocorreios.clients.CorreiosClient;
-import com.dev.apirastreiocorreios.exceptions.ObjetoJaCadastradoParaOUsuarioException;
+import com.dev.apirastreiocorreios.exceptions.ObjetoJaCadastradoException;
 import com.dev.apirastreiocorreios.exceptions.UsuarioNotFoundException;
 import com.dev.apirastreiocorreios.model.Objeto;
 import com.dev.apirastreiocorreios.model.Pacote;
@@ -47,7 +47,7 @@ public class PacoteService {
 		Pacote pacote=pacoteToObjeto(buscarCorreios(pacoteDTO.getCodigo()));
 		
 		if(pacoteRepository.verifaPacoteExistente(pacote.getCodigo(), usuario.get().getId()).isPresent()) {
-			throw new ObjetoJaCadastradoParaOUsuarioException("Objeto já está cadastrado para esse usuário!!");
+			throw new ObjetoJaCadastradoException("Objeto já está cadastrado para esse usuário!");
 		}
 		
 		pacote.setUsuario(usuario.get());		
@@ -62,14 +62,7 @@ public class PacoteService {
 	public List<Pacote> bucarPacotesPorUsuario(Long id){
 		return pacoteRepository.findPacoteByUsuarioId(id);
 	}
-	
-	
-//	public Objeto descricaoToObjeto(String descricao) throws JsonMappingException, JsonProcessingException {
-//		ObjectMapper objectMapper = new ObjectMapper();		
-//		return objectMapper.readValue(descricao, Objeto.class);
-//		
-//	}
-	
+
 	public Pacote pacoteToObjeto(Objeto objeto) {		
 		Pacote pacote= new Pacote();
 		pacote.setCodigo(objeto.getNumero());		

@@ -46,24 +46,28 @@ public class UsuarioService {
 		return usuariosDTO;
 	}
 
+	
+	public Usuario buscar(Long id) {
+		return usuarioRepository.findById(id)
+				.orElseThrow(()->new UsuarioNotFoundException("Usuário não encontrado"));
+	}
+	
+	
+	
 	public Usuario salvar(Usuario usuario) {
 		return usuarioRepository.save(usuario);
 	}
 
 	public Usuario atualizar(Usuario usuario) {
-
 		Usuario obj = usuarioRepository.findById(usuario.getId()).get();
-
 		if (obj == null) {
 			throw new UsuarioNotFoundException("Usuário não encontrado");
 		}
 		obj.setId(obj.getId());
 		obj.setNome(usuario.getNome());
-
 		return usuarioRepository.save(obj);
 
-	}
-	
+	}	
 	public void remover(Long id) {
 		Usuario obj = usuarioRepository.findById(id).get();
 
