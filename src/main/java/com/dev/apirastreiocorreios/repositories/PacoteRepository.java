@@ -14,4 +14,6 @@ public interface PacoteRepository extends JpaRepository<Pacote, String> {
 	
 	@Query("SELECT p FROM Pacote p WHERE p.codigo=?1  AND p.usuario.id =?2 ")
 	Optional<Pacote> verifaPacoteExistente(String codigoPacote, Long idUsuario);
+
+	
 }

@@ -9,11 +9,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.dev.apirastreiocorreios.clients.CorreiosClient;
 import com.dev.apirastreiocorreios.exceptions.ObjetoJaCadastradoException;
+import com.dev.apirastreiocorreios.exceptions.PacoteNotFoundException;
 import com.dev.apirastreiocorreios.exceptions.UsuarioNotFoundException;
 import com.dev.apirastreiocorreios.model.Objeto;
 import com.dev.apirastreiocorreios.model.Pacote;
 import com.dev.apirastreiocorreios.model.Usuario;
 import com.dev.apirastreiocorreios.model.dto.PacoteDTO;
+import com.dev.apirastreiocorreios.model.dto.PacoteResumoDTO;
 import com.dev.apirastreiocorreios.repositories.PacoteRepository;
 import com.dev.apirastreiocorreios.repositories.UsuarioRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -69,6 +71,24 @@ public class PacoteService {
 		pacote.setDescricao(new Gson().toJson(objeto));
 		return pacote;
 		
+	}	
+	public PacoteResumoDTO buscarPacoteResumo(PacoteDTO pacoteDTO) throws JsonMappingException, JsonProcessingException {
+		Pacote pacote = pacoteRepository.verifaPacoteExistente(pacoteDTO.getCodigo(),pacoteDTO.getUsuario())
+				.orElseThrow(()->new PacoteNotFoundException("Pacote não encontrado"));
+	
+		PacoteResumoDTO resumo= new PacoteResumoDTO();		
+		resumo.setCodigo(pacote.getCodigo());
+		resumo.setUsuario(pacote.getUsuario().getId());
+		resumo.setEvento(pacote.getDescricao().getEvento().get(0));		
+		return resumo;
 	}
+	public void deletar(PacoteDTO pacoteDTO) {
+		Pacote pacote = pacoteRepository.verifaPacoteExistente(pacoteDTO.getCodigo(),pacoteDTO.getUsuario())
+				.orElseThrow(()->new PacoteNotFoundException("Pacote não encontrado"));
+		pacoteRepository.delete(pacote);		
+	
+	}
+	
+	
 
 }
